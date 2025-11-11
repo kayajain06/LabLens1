@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Work Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: underline;
+            cursor: help;
+            position: relative;
+        }
+
+        .view-trends {
+            color: #4A90E2;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .normal-range {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .result-container {
+            margin-bottom: 20px;
+            position: relative;
+            height: 60px;
+        }
+
+        .result-value {
+            position: absolute;
+            top: 0;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            cursor: help;
+            text-decoration: underline;
+            transform: translateX(-50%);
+        }
+
+        .result-value.normal {
+            background: #28a745;
+        }
+
+        .result-value.low {
+            background: #d4a826;
+        }
+
+        .result-value.high {
+            background: #d4a826;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 12px solid #666;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .range-bar {
+            height: 30px;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .range-bar-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            z-index: 0;
+        }
+
+        .range-bar span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: white;
+            border: 2px solid #4A90E2;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            display: none;
+            pointer-events: none;
+        }
+
+        .tooltip.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- White Blood Cells -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="white-blood-cells">White Blood Cells</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 4.5 - 13.5 10*3/uL</p>
+            <div class="result-container">
+                <div class="result-value normal" data-tooltip="wbc-result">7.7</div>
+                <div class="arrow"></div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>4.5</span>
+                <span>13.5</span>
+            </div>
+        </div>
+
+        <!-- Red Blood Cells -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="red-blood-cells">Red Blood Cells</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 3.80 - 5.30 10*6/uL</p>
+            <div class="result-container">
+                <div class="result-value normal" data-tooltip="rbc-result">5.17</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>3.8</span>
+                <span>5.3</span>
+            </div>
+        </div>
+
+        <!-- Hemoglobin -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="hemoglobin">Hemoglobin</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 12.0 - 16.0 g/dL</p>
+            <div class="result-container">
+                <div class="result-value low" data-tooltip="hgb-result">11.9</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>12</span>
+                <span>16</span>
+            </div>
+        </div>
+
+        <!-- Hematocrit -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="hematocrit">Hematocrit</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 36 - 46 %</p>
+            <div class="result-container">
+                <div class="result-value normal" data-tooltip="hct-result">37</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>36</span>
+                <span>46</span>
+            </div>
+        </div>
+
+        <!-- MCV -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="mcv">MCV</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 80 - 100 fL</p>
+            <div class="result-container">
+                <div class="result-value low" data-tooltip="mcv-result">71</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>80</span>
+                <span>100</span>
+            </div>
+        </div>
+
+        <!-- MCH -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="mch">MCH</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 27 - 33 pg</p>
+            <div class="result-container">
+                <div class="result-value low" data-tooltip="mch-result">23</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>27</span>
+                <span>33</span>
+            </div>
+        </div>
+
+        <!-- MCHC -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="mchc">MCHC</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 31 - 36 g/dL</p>
+            <div class="result-container">
+                <div class="result-value normal" data-tooltip="mchc-result">32</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>31</span>
+                <span>36</span>
+            </div>
+        </div>
+
+        <!-- RDW -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title" data-tooltip="rdw">RDW</h2>
+                <a href="#" class="view-trends">📊 View trends</a>
+            </div>
+            <p class="normal-range">Normal range: 11.5 - 14.5 %</p>
+            <div class="result-container">
+                <div class="result-value high" data-tooltip="rdw-result">17.1</div>
+            </div>
+            <div class="range-bar">
+                <div class="range-bar-bg"></div>
+                <span>11.5</span>
+                <span>14.5</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tooltip container -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+        const tooltipData = {
+            'white-blood-cells': 'Cells that fight infection and help your immune system. Normal levels mean your body can defend itself properly.',
+            'wbc-result': 'Your white blood cell count is normal - nothing to worry about! Your immune system is functioning well.',
+            'red-blood-cells': 'Cells that carry oxygen throughout your body. They help deliver oxygen to all your organs and tissues.',
+            'rbc-result': 'Your red blood cell count is normal - excellent! Your body is carrying oxygen efficiently.',
+            'hemoglobin': 'The protein in red blood cells that carries oxygen. Low levels can make you feel tired or weak.',
+            'hgb-result': 'Slightly below normal, but not dangerous. Consider eating more iron-rich foods like spinach, red meat, or beans. If fatigue persists, talk to your doctor about iron supplements.',
+            'hematocrit': 'How much of your blood is made up of red blood cells. Low levels can mean your body needs more iron.',
+            'hct-result': 'Your hematocrit is normal - great! Your blood has a healthy proportion of red blood cells.',
+            'mcv': 'The average size of your red blood cells. Smaller cells often mean low iron.',
+            'mcv-result': 'Slightly below normal; not dangerous, but you may need more iron in your diet or a supplement. Try iron-rich foods like lean meat, lentils, and fortified cereals.',
+            'mch': 'How much hemoglobin each red blood cell carries. Low values can indicate iron deficiency.',
+            'mch-result': 'Below normal range. This suggests your red blood cells aren\'t carrying enough hemoglobin. Increase iron intake through diet (red meat, spinach, beans) or consider a supplement after consulting your doctor.',
+            'mchc': 'The concentration of hemoglobin in your red blood cells. Helps identify different types of anemia.',
+            'mchc-result': 'Your MCHC is normal - perfect! Your red blood cells have the right concentration of hemoglobin.',
+            'rdw': 'Measures variation in red blood cell size. Higher values mean more variation, which can indicate nutrient deficiencies.',
+            'rdw-result': 'Higher than normal, which means your red blood cells vary in size. This often happens with iron deficiency. Focus on iron-rich foods and consider getting your iron levels checked.'
+        };
+
+        // Blood test data with normal ranges and values
+        const testData = [
+            { value: 7.7, normalMin: 4.5, normalMax: 13.5 },
+            { value: 5.17, normalMin: 3.80, normalMax: 5.30 },
+            { value: 11.9, normalMin: 12.0, normalMax: 16.0 },
+            { value: 37, normalMin: 36, normalMax: 46 },
+            { value: 71, normalMin: 80, normalMax: 100 },
+            { value: 23, normalMin: 27, normalMax: 33 },
+            { value: 32, normalMin: 31, normalMax: 36 },
+            { value: 17.1, normalMin: 11.5, normalMax: 14.5 }
+        ];
+
+        // Position values and create gradient bars
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((card, index) => {
+            const data = testData[index];
+            const normalMin = data.normalMin;
+            const normalMax = data.normalMax;
+            const normalRange = normalMax - normalMin;
+            
+            // Extended range: normal range ± 150%
+            const extendedMin = normalMin - (normalRange * 1.5);
+            const extendedMax = normalMax + (normalRange * 1.5);
+            const totalRange = extendedMax - extendedMin;
+            
+            // Calculate percentages for green zone
+            const greenStartPercent = ((normalMin - extendedMin) / totalRange) * 100;
+            const greenEndPercent = ((normalMax - extendedMin) / totalRange) * 100;
+            
+            // Create gradient
+            const rangeBarBg = card.querySelector('.range-bar-bg');
+            rangeBarBg.style.background = `linear-gradient(to right, 
+                #ffd966 0%, 
+                #ffd966 ${greenStartPercent}%, 
+                #52b44a ${greenStartPercent}%, 
+                #52b44a ${greenEndPercent}%, 
+                #ffd966 ${greenEndPercent}%, 
+                #ffd966 100%)`;
+            
+            // Position the result value
+            const resultValue = card.querySelector('.result-value');
+            const valuePercent = ((data.value - extendedMin) / totalRange) * 100;
+            resultValue.style.left = `${valuePercent}%`;
+            
+            // Add arrow
+            const arrow = document.createElement('div');
+            arrow.className = 'arrow';
+            arrow.style.left = `${valuePercent}%`;
+            card.querySelector('.result-container').appendChild(arrow);
+            
+            // Update range labels
+            const rangeLabels = card.querySelectorAll('.range-bar span');
+            rangeLabels[0].textContent = extendedMin.toFixed(1);
+            rangeLabels[1].textContent = extendedMax.toFixed(1);
+        });
+
+        const tooltip = document.getElementById('tooltip');
+        const elements = document.querySelectorAll('[data-tooltip]');
+
+        elements.forEach(element => {
+            element.addEventListener('mouseenter', (e) => {
+                const key = element.getAttribute('data-tooltip');
+                const text = tooltipData[key];
+                
+                if (text) {
+                    tooltip.textContent = text;
+                    tooltip.classList.add('show');
+                    
+                    const rect = element.getBoundingClientRect();
+                    tooltip.style.left = rect.left + 'px';
+                    tooltip.style.top = (rect.bottom + 10) + window.scrollY + 'px';
+                }
+            });
+
+            element.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('show');
+            });
+        });
+
+        // Prevent links from navigating
+        document.querySelectorAll('.view-trends').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>
